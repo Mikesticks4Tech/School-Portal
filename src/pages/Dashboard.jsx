@@ -1,12 +1,31 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import bgImage from "../assets/school-logo.png"; // make sure this path is correct
 
 function Dashboard() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  const matric = localStorage.getItem("studentMatric");
-  const studentName = localStorage.getItem("studentName") || "Student";
+  // Student info
+  const matric = localStorage.getItem("studentMatric") || "2023001";
+  const studentName = localStorage.getItem("studentName") || "Idowu Michael";
+  const department =
+    localStorage.getItem("studentDepartment") || "Computer Science";
+  const level = localStorage.getItem("studentLevel") || "400";
+  const status = localStorage.getItem("studentStatus") || "Active";
+  const session = localStorage.getItem("studentSession") || "2025/2026";
+  const currentSemester =
+    localStorage.getItem("studentSemester") || "2nd Semester";
+
+  const courses = [
+    "Web Development",
+    "Database Systems",
+    "AI & ML",
+    "Networking",
+    "Operating Systems",
+  ];
+  const cgpa = 4.25;
+  const notifications = [];
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -16,14 +35,13 @@ function Dashboard() {
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("studentMatric");
-    localStorage.removeItem("studentName");
+    localStorage.clear();
     navigate("/");
   };
 
   return (
     <div style={styles.container}>
+      {/* Sidebar */}
       <div
         style={{
           ...styles.sidebar,
@@ -39,37 +57,75 @@ function Dashboard() {
 
         {sidebarOpen && <h2>🎓 UniPortal</h2>}
 
-        {sidebarOpen && <p>Dashboard</p>}
-        {sidebarOpen && <p>Courses</p>}
-        {sidebarOpen && <p>Results</p>}
-        {sidebarOpen && <p>Profile</p>}
+        {sidebarOpen && (
+          <>
+            <p>Dashboard</p>
+            <p>Courses</p>
+            <p>Results</p>
+            <p>Profile</p>
+          </>
+        )}
 
         <button onClick={handleLogout} style={styles.logoutBtn}>
           Logout
         </button>
       </div>
 
+      {/* Main content */}
       <div style={styles.main}>
-        <h1>Welcome {studentName} 👋</h1>
+        {/* Greeting section */}
+        <div style={styles.greetingSection}>
+          <h1>Welcome {studentName} 👋</h1>
 
-        <p>
-          <strong>Matric Number:</strong> {matric}
-        </p>
+          <div style={styles.studentInfo}>
+            <p>
+              <strong>Matric Number:</strong> {matric}
+            </p>
+            <p>
+              <strong>Department:</strong> {department}
+            </p>
+            <p>
+              <strong>Level:</strong> {level}
+            </p>
+            <p>
+              <strong>Status:</strong> {status}
+            </p>
+            <p>
+              <strong>Session:</strong> {session}
+            </p>
+            <p>
+              <strong>Current Semester:</strong> {currentSemester}
+            </p>
+          </div>
+        </div>
 
+        {/* Cards */}
         <div style={styles.cardContainer}>
           <div style={styles.card}>
             <h3>Registered Courses</h3>
-            <p>5 Courses</p>
+            <ul>
+              {courses.map((course, index) => (
+                <li key={index}>{course}</li>
+              ))}
+            </ul>
           </div>
 
           <div style={styles.card}>
             <h3>CGPA</h3>
-            <p>4.25</p>
+            <p>{cgpa}</p>
           </div>
 
           <div style={styles.card}>
             <h3>Notifications</h3>
-            <p>No new updates</p>
+            {notifications.length > 0 ? (
+              <ul>
+                {notifications.map((note, index) => (
+                  <li key={index}>{note}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>No new updates</p>
+            )}
           </div>
         </div>
       </div>
@@ -79,8 +135,15 @@ function Dashboard() {
 
 const styles = {
   container: {
-    display: "flex",
     height: "100vh",
+    width: "100vw",
+    display: "flex",
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    backgroundColor: "rgba(0,0,0,0.4)",
+    backgroundBlendMode: "darken",
   },
   sidebar: {
     backgroundColor: "#1e3a8a",
@@ -112,17 +175,32 @@ const styles = {
     padding: "40px",
     backgroundColor: "#f3f4f6",
   },
+  greetingSection: {
+    backgroundColor: "rgba(30, 58, 138, 0.1)", // soft dark blue tint
+    padding: "20px",
+    borderRadius: "10px",
+    marginBottom: "20px",
+  },
+  studentInfo: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "20px",
+    marginBottom: "20px",
+  },
   cardContainer: {
     display: "flex",
     gap: "20px",
-    marginTop: "20px",
+    flexWrap: "wrap",
   },
   card: {
-    backgroundColor: "white",
+    backgroundColor: "#1e3a8a",
+    color: "white",
     padding: "20px",
     borderRadius: "10px",
-    boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
+    boxShadow: "0 5px 15px rgba(0,0,0,0.2)",
     flex: 1,
+    transition: "transform 0.2s, box-shadow 0.2s",
+    cursor: "pointer",
   },
 };
 
