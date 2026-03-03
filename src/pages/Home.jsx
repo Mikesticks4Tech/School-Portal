@@ -41,55 +41,45 @@ function Home() {
 
   return (
     <div style={styles.container}>
-      <div style={styles.card}>
-        <h2>Login</h2>
+      <img src={bgImage} alt="bg" style={styles.bgImage} />
+      <div style={styles.overlay}></div>
 
-        <form onSubmit={handleLogin}>
-          <input
-            type="text"
-            placeholder="Matric Number"
-            value={matric}
-            onChange={(e) => setMatric(e.target.value)}
-            style={styles.input}
-          />
+      <div style={styles.content}>
+        <div style={styles.card}>
+          <h2>Login</h2>
 
-          <div style={{ position: "relative" }}>
+          <form onSubmit={handleLogin}>
             <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              type="text"
+              placeholder="Matric Number"
+              value={matric}
+              onChange={(e) => setMatric(e.target.value)}
               style={styles.input}
             />
-            <span
-              onClick={() => setShowPassword(!showPassword)}
-              style={{
-                position: "absolute",
-                right: "10px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                cursor: "pointer",
-                fontSize: "14px",
-                color: "#2563eb",
-                userSelect: "none",
-              }}
-            >
-              {showPassword ? "Hide" : "Show"}
-            </span>
-          </div>
 
-          {error && <p style={{ color: "red" }}>{error}</p>}
+            <div style={{ position: "relative" }}>
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={styles.input}
+              />
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                style={styles.showBtn}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </span>
+            </div>
 
-          <button
-            type="submit"
-            style={styles.button}
-            disabled={loading}
-            onMouseOver={(e) => (e.target.style.backgroundColor = "#1d4ed8")}
-            onMouseOut={(e) => (e.target.style.backgroundColor = "#2563eb")}
-          >
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </form>
+            {error && <p style={{ color: "red" }}>{error}</p>}
+
+            <button type="submit" style={styles.button} disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
@@ -97,47 +87,64 @@ function Home() {
 
 const styles = {
   container: {
+    position: "relative",
     height: "100vh",
-    width: "100vw",
+    width: "100%",
+    overflow: "hidden",
+  },
+
+  bgImage: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    zIndex: -2,
+  },
+
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    zIndex: -1,
+  },
+
+  content: {
+    position: "relative",
+    zIndex: 1,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    overflow: "hidden",
+    height: "100%",
+    padding: "20px",
   },
+
   card: {
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    backgroundColor: "rgba(255, 255, 255, 0.15)",
     backdropFilter: "blur(15px)",
     WebkitBackdropFilter: "blur(15px)",
     padding: "40px",
     borderRadius: "15px",
-    width: "350px",
+    width: "100%",
+    maxWidth: "400px",
     textAlign: "center",
     boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
     border: "1px solid rgba(255,255,255,0.3)",
   },
-  input: {
-    width: "100%",
-    padding: "10px",
-    margin: "10px 0",
-    boxSizing: "border-box",
-    borderRadius: "5px",
-    border: "1px solid #ccc",
-  },
-  button: {
-    width: "100%",
-    padding: "12px",
-    backgroundColor: "#2563eb",
-    color: "white",
-    border: "none",
-    borderRadius: "5px",
+
+  showBtn: {
+    position: "absolute",
+    right: "10px",
+    top: "50%",
+    transform: "translateY(-50%)",
     cursor: "pointer",
-    fontSize: "16px",
-    marginTop: "10px",
-    transition: "all 0.3s ease",
+    fontSize: "14px",
+    color: "#2563eb",
+    userSelect: "none",
   },
 };
 
