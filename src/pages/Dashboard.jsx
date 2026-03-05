@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import bgImage from "../assets/school-logo.png";
 
+const API_URL = "https://school-backend-e1w9.onrender.com"; // <-- Updated backend URL
+
 function Dashboard() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -32,9 +34,10 @@ function Dashboard() {
 
   // Fetch students on mount
   useEffect(() => {
-    fetch("https://school-portal-ync4.onrender.com/students")
+    fetch(`${API_URL}/students`) // <-- Updated URL
       .then((res) => res.json())
-      .then((data) => setStudents(data));
+      .then((data) => setStudents(data))
+      .catch((err) => console.error("Error fetching students:", err));
   }, []);
 
   // --- Add Student Form state ---
@@ -50,18 +53,15 @@ function Dashboard() {
     }
 
     try {
-      const response = await fetch(
-        "https://school-portal-ync4.onrender.com/add-student",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: newName,
-            matric: newMatric,
-            department: newDepartment,
-          }),
-        },
-      );
+      const response = await fetch(`${API_URL}/add-student`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: newName,
+          matric: newMatric,
+          department: newDepartment,
+        }),
+      });
 
       const data = await response.json();
       console.log("Saved:", data);
@@ -81,12 +81,9 @@ function Dashboard() {
   // --- Delete student function ---
   const deleteStudent = async (id) => {
     try {
-      const response = await fetch(
-        `https://school-portal-ync4.onrender.com/delete-student/${id}`,
-        {
-          method: "DELETE",
-        },
-      );
+      const response = await fetch(`${API_URL}/delete-student/${id}`, {
+        method: "DELETE",
+      });
       const data = await response.json();
       console.log("Deleted:", data);
 
