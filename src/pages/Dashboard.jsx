@@ -32,7 +32,7 @@ function Dashboard() {
 
   // Fetch students on mount
   useEffect(() => {
-    fetch("http://localhost:5000/students")
+    fetch("https://school-portal-ync4.onrender.com/students")
       .then((res) => res.json())
       .then((data) => setStudents(data));
   }, []);
@@ -50,15 +50,18 @@ function Dashboard() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/add-student", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: newName,
-          matric: newMatric,
-          department: newDepartment,
-        }),
-      });
+      const response = await fetch(
+        "https://school-portal-ync4.onrender.com/add-student",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: newName,
+            matric: newMatric,
+            department: newDepartment,
+          }),
+        },
+      );
 
       const data = await response.json();
       console.log("Saved:", data);
@@ -79,7 +82,7 @@ function Dashboard() {
   const deleteStudent = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/delete-student/${id}`,
+        `https://school-portal-ync4.onrender.com/delete-student/${id}`,
         {
           method: "DELETE",
         },

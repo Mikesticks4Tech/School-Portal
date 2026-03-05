@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://your-username.github.io/school-portal",
+  "homepage": "https://Mikesticks4Tech.github.io/school-portal",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
