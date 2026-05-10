@@ -12,8 +12,27 @@ function Home() {
   const navigate = useNavigate();
 
   const users = [
-    { matric: "2023001", password: "123456", name: "Idowu Michael" },
-    { matric: "2023002", password: "abcdef", name: "Jane Doe" },
+    {
+      matric: "2023001",
+      password: "123456",
+      name: "Idowu Michael",
+      department: "Computer Science",
+      level: "400",
+    },
+    {
+      matric: "2023002",
+      password: "abcdef",
+      name: "Jane Doe",
+      department: "Software Engineering",
+      level: "300",
+    },
+    {
+      matric: "2023003",
+      password: "pass123",
+      name: "Daniel Adams",
+      department: "Cyber Security",
+      level: "200",
+    },
   ];
 
   const handleLogin = (e) => {
@@ -30,7 +49,9 @@ function Home() {
         setError("");
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("studentMatric", matric);
-        localStorage.setItem("studentName", user.name || "Student"); // for dynamic name
+        localStorage.setItem("studentName", user.name);
+        localStorage.setItem("studentDepartment", user.department);
+        localStorage.setItem("studentLevel", user.level);
         navigate("/dashboard");
       } else {
         setError("Invalid matric number or password");
@@ -46,7 +67,9 @@ function Home() {
 
       <div style={styles.content}>
         <div style={styles.card}>
-          <h2>Login</h2>
+          <h2 style={{ marginBottom: "20px", color: "#1e3a8a" }}>
+            Student Portal Login
+          </h2>
 
           <form onSubmit={handleLogin}>
             <input

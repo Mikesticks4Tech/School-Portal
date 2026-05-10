@@ -31,13 +31,20 @@ function Dashboard() {
 
   // --- All Students state ---
   const [students, setStudents] = useState([]);
+  const [loadingStudents, setLoadingStudents] = useState(true);
 
   // Fetch students on mount
   useEffect(() => {
-    fetch(`${API_URL}/students`) // <-- Updated URL
+    fetch(`${API_URL}/students`)
       .then((res) => res.json())
-      .then((data) => setStudents(data))
-      .catch((err) => console.error("Error fetching students:", err));
+      .then((data) => {
+        setStudents(data);
+        setLoadingStudents(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching students:", err);
+        setLoadingStudents(false);
+      });
   }, []);
 
   // --- Add Student Form state ---
@@ -162,19 +169,50 @@ function Dashboard() {
 
         {/* Cards */}
         <div style={styles.cardContainer}>
-          <div style={styles.card}>
+          <div
+            style={styles.card}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-5px)";
+              e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.3)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "0 5px 15px rgba(0,0,0,0.2)";
+            }}
+          >
             <h3>Registered Courses</h3>
+
             <ul>
               {courses.map((c, i) => (
                 <li key={i}>{c}</li>
               ))}
             </ul>
           </div>
-          <div style={styles.card}>
+          <div
+            style={styles.card}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-5px)";
+              e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.3)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "0 5px 15px rgba(0,0,0,0.2)";
+            }}
+          >
             <h3>CGPA</h3>
             <p>{cgpa}</p>
           </div>
-          <div style={styles.card}>
+          <div
+            style={styles.card}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-5px)";
+              e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.3)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "0 5px 15px rgba(0,0,0,0.2)";
+            }}
+          >
             <h3>Notifications</h3>
             {notifications.length > 0 ? (
               <ul>
@@ -189,7 +227,15 @@ function Dashboard() {
         </div>
 
         {/* Add Student Form */}
-        <div style={{ marginTop: "30px" }}>
+        <div
+          style={{
+            marginTop: "30px",
+            background: "white",
+            padding: "25px",
+            borderRadius: "15px",
+            boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
+          }}
+        >
           <h3>Add New Student</h3>
           <input
             type="text"
@@ -220,26 +266,38 @@ function Dashboard() {
         {/* All Students List */}
         <div style={{ marginTop: "40px" }}>
           <h3>All Students</h3>
-          {students.length > 0 ? (
+          {loadingStudents ? (
+            <p style={{ marginTop: "20px" }}>Loading students...</p>
+          ) : students.length > 0 ? (
             students.map((student) => (
-              <div key={student._id} style={{ marginBottom: "15px" }}>
-                <p>Name: {student.name}</p>
+              <div
+                key={student._id}
+                style={{
+                  background: "white",
+                  padding: "15px",
+                  borderRadius: "10px",
+                  marginBottom: "15px",
+                  boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+                }}
+              >
+                <h4>{student.name}</h4>
                 <p>Matric: {student.matric}</p>
                 <p>Department: {student.department}</p>
+
                 <button
                   onClick={() => deleteStudent(student._id)}
                   style={{
-                    padding: "5px 10px",
+                    padding: "8px 12px",
                     backgroundColor: "#ef4444",
                     color: "white",
                     border: "none",
                     borderRadius: "5px",
                     cursor: "pointer",
+                    marginTop: "10px",
                   }}
                 >
                   Delete
                 </button>
-                <hr />
               </div>
             ))
           ) : (
@@ -291,8 +349,9 @@ const styles = {
   },
   main: {
     flex: 1,
-    padding: "40px",
+    padding: "20px",
     backgroundColor: "#f3f4f6",
+    overflowY: "auto",
   },
   greetingSection: {
     backgroundColor: "rgba(30, 58, 138, 0.1)",
@@ -307,9 +366,9 @@ const styles = {
     marginBottom: "20px",
   },
   cardContainer: {
-    display: "flex",
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
     gap: "20px",
-    flexWrap: "wrap",
   },
   card: {
     backgroundColor: "#1e3a8a",
@@ -323,19 +382,26 @@ const styles = {
   },
   input: {
     display: "block",
-    marginBottom: "10px",
-    padding: "8px",
-    width: "250px",
-    borderRadius: "5px",
-    border: "1px solid #ccc",
+    marginBottom: "15px",
+    padding: "12px",
+    width: "100%",
+    maxWidth: "400px",
+    borderRadius: "10px",
+    border: "1px solid #d1d5db",
+    outline: "none",
+    fontSize: "15px",
+    transition: "0.3s",
   },
   addBtn: {
-    padding: "10px 20px",
-    backgroundColor: "#10b981",
+    padding: "12px 20px",
+    background: "linear-gradient(135deg, #2563eb, #1e3a8a)",
     color: "white",
     border: "none",
-    borderRadius: "5px",
+    borderRadius: "10px",
     cursor: "pointer",
+    fontWeight: "bold",
+    fontSize: "15px",
+    transition: "0.3s ease",
   },
 };
 
