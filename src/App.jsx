@@ -4,7 +4,7 @@ import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
-    <Router basename="/school-portal">
+    <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
